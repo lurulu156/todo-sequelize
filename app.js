@@ -98,6 +98,29 @@ app.get('/todos/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
+//edit for specific item
+app.get('/todos/:id/edit', (req, res) => {
+  const UserId = req.user.id
+  const id = req.params.id
+  return Todo.findOne({where: { id, UserId }})
+    .then((todo) => res.render('edit', { todo: todo.toJSON() }))
+    .catch(error => console.log(error))
+})
+
+app.put('/todos/:id', (req, res) => {
+  const UserId = req.user.id
+  const id = req.params.id
+  const { name, isDone } = req.body
+  return Todo.findOne({where: { id, UserId }})
+    .then((todo) => {
+      todo.name = name
+      todo.isDone = isDone === 'on'
+      return todo.save()
+    })
+    .then(() => res.redirect(`/todos/${id}`))
+    .catch(error => console.log(error))
+})
+
 app.listen(PORT, () => {
   console.log(`App is running on http://localhost:${PORT}`)
 })
