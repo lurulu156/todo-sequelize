@@ -13,7 +13,7 @@ const users = require('./modules/users')
 // router.use('/users', users)
 // router.use('/auth', auth)
 // router.use('/', authenticator, home)
-// router.use('/todos', todos)
+router.use('/todos', todos)
 router.use('/users', users)
 router.use('/', home)
 // 匯出路由器
