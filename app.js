@@ -10,6 +10,7 @@ const db = require('./models')
 const Todo = db.Todo
 const User = db.User
 const passport = require('passport')
+const routes = require('./routes')
 
 app.engine('hbs', exphbs.engine({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
@@ -24,15 +25,16 @@ app.use(express.urlencoded({ extended: true })) //body-parser
 app.use(methodOverride('_method'))
 
 usePassport(app)
+app.use(routes)
 
-app.get('/', (req, res) => {
-  return Todo.findAll({
-    raw: true,
-    nest: true
-  })
-    .then((todos) => { return res.render('index', { todos: todos }) })
-    .catch((error) => { return res.status(422).json(error) })
-})
+// app.get('/', (req, res) => {
+//   return Todo.findAll({
+//     raw: true,
+//     nest: true
+//   })
+//     .then((todos) => { return res.render('index', { todos: todos }) })
+//     .catch((error) => { return res.status(422).json(error) })
+// })
 
 // user routes
 app.get('/users/login', (req, res) => {
