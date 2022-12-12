@@ -34,6 +34,7 @@ app.get('/', (req, res) => {
     .catch((error) => { return res.status(422).json(error) })
 })
 
+// user routes
 app.get('/users/login', (req, res) => {
   res.render('login')
 })
@@ -75,7 +76,21 @@ app.post('/users/register', (req, res) => {
 app.get('/users/logout', (req, res) => {
   res.send('logout')
 })
+// todos routes
+//get new item
+app.get('/todos/new', (req, res) => {
+  res.render('new')
+})
 
+app.post('/todos', (req, res) => {
+  const UserId = req.user.id
+  const name = req.body.name
+  return Todo.create({ name, UserId })
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
+// view detail item
 app.get('/todos/:id', (req, res) => {
   const id = req.params.id
   return Todo.findByPk(id)
